@@ -102,6 +102,6 @@ int main(int argc, char **argv) {
     x = xl;
     y = yl;
     u = ul;
-    printf("x: %f, y: %f\n", x, y);
+    printf("%f\t%f\n", x, y);
   }
 }
