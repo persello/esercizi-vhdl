@@ -13,6 +13,7 @@ ARCHITECTURE structural OF testBench IS
       qn   : OUT STD_LOGIC
     );
   END COMPONENT;
+
   COMPONENT vectorGenerator
     PORT (
       clk  : OUT STD_LOGIC;
@@ -22,7 +23,9 @@ ARCHITECTURE structural OF testBench IS
       qn   : IN STD_LOGIC
     );
   END COMPONENT;
+
   SIGNAL clkTB, rstnTB, dTB, qTB, qnTB : STD_LOGIC;
+
 BEGIN
 
   d1 : dff PORT MAP(
@@ -31,10 +34,12 @@ BEGIN
     qn   => qnTB,
     clk  => clkTB,
     d    => dTB);
+
   v1 : vectorGenerator PORT MAP(
     q    => qTB,
     rstn => rstnTB,
     qn   => qnTB,
     clk  => clkTB,
     d    => dTB);
+
 END structural;
