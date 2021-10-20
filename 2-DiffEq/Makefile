@@ -2,6 +2,7 @@ VHDLDIR=VHDL
 WORKDIR=WORK
 VCDDIR=VCD
 VECDIR=OUTVECS
+RESDIR=RESULTS
 MAIN=testBench
 TIME="600us"
 #
@@ -31,5 +32,6 @@ prepare: force
 	mkdir -p $(WORKDIR)
 	mkdir -p $(VCDDIR)
 	mkdir -p $(VECDIR)
+	mkdir -p $(RESDIR)
 
 force:
