@@ -15,12 +15,20 @@ ENTITY vectorGenerator IS
     xi  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
     yi  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
     ui  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
-    dx  : OUT SFIXED(DSZ - 1 DOWNTO LLM);
+    dx  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
     a   : OUT SFIXED(SSZ - 1 DOWNTO LLM);
     c   : IN STD_LOGIC;
     x   : IN SFIXED(DSZ - 1 DOWNTO LLM);
     y   : IN SFIXED(DSZ - 1 DOWNTO LLM));
 END ENTITY vectorGenerator;
+
+ARCHITECTURE assertive OF vectorGenerator IS
+  CONSTANT ckP  : TIME := 100 ns;
+  CONSTANT ckHP : TIME := ckP * 0.5;
+
+BEGIN
+
+END assertive;
 
 ARCHITECTURE behavioral OF vectorGenerator IS
 
@@ -48,11 +56,15 @@ BEGIN
     clk <= ckTmp;
     ckTmp := NOT ckTmp;
     WAIT FOR ckHP;
-    WRITE (outLine, TO_REAL(x));
-    WRITE (outLine, STRING'(" "));
-    WRITE (outLine, TO_REAL(y));
-    WRITELINE (outFile, outLine);
+    -- Print once per cycle
+    IF clk = '1' THEN
+      WRITE (outLine, TO_REAL(x));
+      WRITE (outLine, STRING'(" "));
+      WRITE (outLine, TO_REAL(y));
+      WRITELINE (outFile, outLine);
+    END IF;
     IF c = '1' THEN
+      FILE_CLOSE (outFile);
       WAIT;
     END IF;
   END PROCESS;

@@ -34,27 +34,42 @@ ARCHITECTURE behavior OF diffeq IS
 
   SIGNAL u, xl, yl, ul : SFIXED (DSZ - 1 DOWNTO LLM);
 
+  -- xi: starting x
+  -- yi: y(xi)
+  -- ui: y'(xi)
+  -- dx: x increment
+  -- a: upper limit
+  -- c: completion flag
+  -- x: output current x
+  -- y: output current y
+
+  -- u: resized ui
+
+  -- xl: next x
+  -- yl: next y
+  -- ul: next u
 BEGIN
 
   dComp : PROCESS (rst, clk)
   BEGIN
     IF (rst = '0') THEN
-      u  <= RESIZE(ui, u);
-      xl <= RESIZE(xi, xl);
-      yl <= RESIZE(yi, yl);
-      ul <= RESIZE(ui, ul);
+      x  <= RESIZE (xi, x);
+      y  <= RESIZE (yi, y);
+      u  <= RESIZE (ui, u);
+      xl <= RESIZE (xi, x);
+      yl <= RESIZE (yi, y);
+      ul <= RESIZE (ui, u);
       c  <= '0';
-      x  <= (OTHERS => '0');
-      y  <= (OTHERS => '0');
     ELSE
-      IF (clk'event AND clk = '1') THEN
-        xl <= x + dx;
-        ul <= u - (3 * x * u * dx) - (3 * y * dx);
-        yl <= y + (u * dx);
-        c  <= '1' WHEN x < a;
+      IF (clk'EVENT AND clk = '1') THEN
+        xl <= RESIZE (x + dx, xl);
+        ul <= RESIZE (u - (3 * x * u * dx) - (3 * y * dx), ul);
+        yl <= RESIZE (y + u * dx, yl);
         x  <= xl;
-        y  <= yl;
         u  <= ul;
+        y  <= yl;
+        c  <= '1' WHEN x >= a ELSE
+          '0';
       END IF;
     END IF;
   END PROCESS;
