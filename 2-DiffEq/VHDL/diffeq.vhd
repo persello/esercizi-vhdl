@@ -11,20 +11,20 @@ ENTITY diffeq IS
   -- DSZ: Double Size
   -- LLM: Lower Limit
   GENERIC (
-    SSZ : INTEGER;
-    DSZ : INTEGER;
-    LLM : INTEGER
+    SSZ : integer;
+    DSZ : integer;
+    LLM : integer
   );
 
   PORT (
-    clk : IN STD_LOGIC;
-    rst : IN STD_LOGIC;
+    clk : IN std_logic;
+    rst : IN std_logic;
     xi  : IN SFIXED (SSZ - 1 DOWNTO LLM);
     yi  : IN SFIXED (SSZ - 1 DOWNTO LLM);
     ui  : IN SFIXED (SSZ - 1 DOWNTO LLM);
     dx  : IN SFIXED (SSZ - 1 DOWNTO LLM);
     a   : IN SFIXED (SSZ - 1 DOWNTO LLM);
-    c   : OUT STD_LOGIC;
+    c   : OUT std_logic;
     x   : OUT SFIXED (DSZ - 1 DOWNTO LLM);
     y   : OUT SFIXED (DSZ - 1 DOWNTO LLM)
   );
@@ -32,7 +32,7 @@ END diffeq;
 
 ARCHITECTURE behavior OF diffeq IS
 
-  SIGNAL u, xl, yl, ul : SFIXED (DSZ - 1 DOWNTO LLM);
+  SIGNAL u : SFIXED (DSZ - 1 DOWNTO LLM);
 
   -- xi: starting x
   -- yi: y(xi)
@@ -44,31 +44,21 @@ ARCHITECTURE behavior OF diffeq IS
   -- y: output current y
 
   -- u: resized ui
-
-  -- xl: next x
-  -- yl: next y
-  -- ul: next u
 BEGIN
 
   dComp : PROCESS (rst, clk)
   BEGIN
     IF (rst = '0') THEN
-      x  <= RESIZE (xi, x);
-      y  <= RESIZE (yi, y);
-      u  <= RESIZE (ui, u);
-      xl <= RESIZE (xi, x);
-      yl <= RESIZE (yi, y);
-      ul <= RESIZE (ui, u);
-      c  <= '0';
+      x <= RESIZE (xi, x);
+      y <= RESIZE (yi, y);
+      u <= RESIZE (ui, u);
+      c <= '0';
     ELSE
       IF (clk'EVENT AND clk = '1') THEN
-        xl <= RESIZE (x + dx, xl);
-        ul <= RESIZE (u - (3 * x * u * dx) - (3 * y * dx), ul);
-        yl <= RESIZE (y + u * dx, yl);
-        x  <= xl;
-        u  <= ul;
-        y  <= yl;
-        c  <= '1' WHEN x >= a ELSE
+        x <= RESIZE (x + dx, x);
+        u <= RESIZE (u - (3 * x * u * dx) - (3 * y * dx), u);
+        y <= RESIZE (y + u * dx, y);
+        c <= '1' WHEN x >= a ELSE
           '0';
       END IF;
     END IF;

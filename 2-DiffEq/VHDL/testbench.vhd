@@ -8,28 +8,28 @@ END ENTITY;
 
 ARCHITECTURE structural OF testBench IS
 
-  CONSTANT SSZ : INTEGER := 16;
-  CONSTANT LLM : INTEGER := - 16;
-  CONSTANT DSZ : INTEGER := 2 * SSZ;
+  CONSTANT SSZ : integer := 16;
+  CONSTANT LLM : integer := - 16;
+  CONSTANT DSZ : integer := 2 * SSZ;
 
-  CONSTANT VGV : STRING  := "BEHAVIORAL";
+  CONSTANT VGV : string := "BEHAVIORAL";
   -- CONSTANT VGV : STRING  := "ASSERTIVE";
 
   COMPONENT diffeq IS
     GENERIC (
-      SSZ : INTEGER;
-      DSZ : INTEGER;
-      LLM : INTEGER
+      SSZ : integer;
+      DSZ : integer;
+      LLM : integer
     );
     PORT (
-      clk : IN STD_LOGIC;
-      rst : IN STD_LOGIC;
+      clk : IN std_logic;
+      rst : IN std_logic;
       xi  : IN SFIXED (SSZ - 1 DOWNTO LLM);
       yi  : IN SFIXED (SSZ - 1 DOWNTO LLM);
       ui  : IN SFIXED (SSZ - 1 DOWNTO LLM);
       dx  : IN SFIXED (SSZ - 1 DOWNTO LLM);
       a   : IN SFIXED (SSZ - 1 DOWNTO LLM);
-      c   : OUT STD_LOGIC;
+      c   : OUT std_logic;
       x   : OUT SFIXED (DSZ - 1 DOWNTO LLM);
       y   : OUT SFIXED (DSZ - 1 DOWNTO LLM)
     );
@@ -37,27 +37,27 @@ ARCHITECTURE structural OF testBench IS
 
   COMPONENT vectorGenerator IS
     GENERIC (
-      SSZ : INTEGER;
-      DSZ : INTEGER;
-      LLM : INTEGER
+      SSZ : integer;
+      DSZ : integer;
+      LLM : integer
     );
     PORT (
-      clk : OUT STD_LOGIC;
-      rst : OUT STD_LOGIC;
+      clk : OUT std_logic;
+      rst : OUT std_logic;
       xi  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
       yi  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
       ui  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
       dx  : OUT SFIXED(SSZ - 1 DOWNTO LLM);
       a   : OUT SFIXED(SSZ - 1 DOWNTO LLM);
-      c   : IN STD_LOGIC;
+      c   : IN std_logic;
       x   : IN SFIXED(DSZ - 1 DOWNTO LLM);
       y   : IN SFIXED(DSZ - 1 DOWNTO LLM)
     );
   END COMPONENT;
 
-  SIGNAL clkTB, rstTB                : STD_LOGIC;
+  SIGNAL clkTB, rstTB                : std_logic;
   SIGNAL xiTB, yiTB, uiTB, dxTB, aTB : SFIXED (SSZ - 1 DOWNTO LLM);
-  SIGNAL cTB                         : STD_LOGIC;
+  SIGNAL cTB                         : std_logic;
   SIGNAL xTB, yTB                    : SFIXED (DSZ - 1 DOWNTO LLM);
 
 BEGIN
