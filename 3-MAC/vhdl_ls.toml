@@ -1,0 +1,6 @@
+[libraries]
+diffeq.files = [
+  'VHDL/mac.vhd',
+  'VHDL/testBench.vhd',
+  'VHDL/vectorGenerator.vhd',
+]
